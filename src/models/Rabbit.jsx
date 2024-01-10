@@ -17,10 +17,10 @@ const Rabbit = ({ isRotating, setIsRotating, setCurrentStage, ...props }) => {
 
     const rabbitRef = useRef();
     const skateboardRef = useRef();
+    const initialPosition = useRef([0, 0, 0]);
 
 
 
-    // const skateboardRef = useRef()
     const { nodes, materials } = useGLTF(RabbitScene);
 
     const { gl, viewport } = useThree()
@@ -28,7 +28,9 @@ const Rabbit = ({ isRotating, setIsRotating, setCurrentStage, ...props }) => {
     const rotationSpeed = useRef(0)
     const dampigFactor = 0.95
 
-
+    useEffect(() => {
+        initialPosition.current = rabbitRef.current.position.toArray();
+    }, []);
 
 
 
@@ -81,14 +83,20 @@ const Rabbit = ({ isRotating, setIsRotating, setCurrentStage, ...props }) => {
             if (Math.abs(rotationSpeed.current) < 0.001) {
                 rotationSpeed.current = 0
             }
-
-            rabbitRef.current.position.y = 2
-            skateboardRef.current.position.y = 0;
-
-
-
         } else {
             const rotation = rabbitRef.current.rotation.y
+
+
+            if (rabbitRef.current.position.y >= 9 || rabbitRef.current.position.y <= -9) {
+                rabbitRef.current.position.set(...initialPosition.current);
+            } else {
+                rabbitRef.current.rotation.y += 0.07;
+                rabbitRef.current.position.y += 0.1;
+            }
+
+
+
+
 
             if (skateboardRef.current.position.y >= 0.9) {
                 skateboardRef.current.position.y = 0
@@ -99,15 +107,15 @@ const Rabbit = ({ isRotating, setIsRotating, setCurrentStage, ...props }) => {
                 skateboardRef.current.position.y = 0;
 
             }
-            if (rabbitRef.current.position.y >= 9) {
-                rabbitRef.current.position.y -= 9
+            // if (rabbitRef.current.position.y >= 9) {
+            //     rabbitRef.current.position.y -= 7
 
 
-            } else {
-                rabbitRef.current.rotation.y += 0.07;
-                rabbitRef.current.position.y += 0.1;
+            // } else {
+            //     rabbitRef.current.rotation.y += 0.07;
+            //     rabbitRef.current.position.y += 0.1;
 
-            }
+            // }
 
 
             /**
@@ -132,16 +140,16 @@ const Rabbit = ({ isRotating, setIsRotating, setCurrentStage, ...props }) => {
             // Set the current stage based on the island's orientation
             switch (true) {
                 case normalizedRotation >= 5.45 && normalizedRotation <= 5.85:
-                    setCurrentStage(4);
+                    setCurrentStage(1);
                     break;
                 case normalizedRotation >= 0.85 && normalizedRotation <= 1.3:
-                    setCurrentStage(3);
-                    break;
-                case normalizedRotation >= 2.4 && normalizedRotation <= 2.6:
                     setCurrentStage(2);
                     break;
+                case normalizedRotation >= 2.4 && normalizedRotation <= 2.6:
+                    setCurrentStage(3);
+                    break;
                 case normalizedRotation >= 4.25 && normalizedRotation <= 4.75:
-                    setCurrentStage(1);
+                    setCurrentStage(4);
                     break;
                 default:
                     setCurrentStage(null);
