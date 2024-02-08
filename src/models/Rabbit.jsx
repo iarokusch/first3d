@@ -87,26 +87,28 @@ const Rabbit = ({ isRotating, setIsRotating, setCurrentStage, ...props }) => {
             const rotation = rabbitRef.current.rotation.y
 
 
-            if (rabbitRef.current.position.y >= 9 || rabbitRef.current.position.y <= -9) {
-                rabbitRef.current.position.set(...initialPosition.current);
-            } else {
-                rabbitRef.current.rotation.y += 0.07;
-                rabbitRef.current.position.y += 0.1;
-            }
+
+            // this code make skatebord and bunny dynamic 
+
+            // if (rabbitRef.current.position.y >= 9 || rabbitRef.current.position.y <= -9) {
+            //     rabbitRef.current.position.set(...initialPosition.current);
+            // } else {
+            //     rabbitRef.current.rotation.y += 0.07;
+            //     rabbitRef.current.position.y += 0.1;
+            // }
+
+            // if (skateboardRef.current.position.y >= 0.9) {
+            //     skateboardRef.current.position.y = 0
+
+            // } else {
+            //     skateboardRef.current.rotation.y += 0.3;
+            //     skateboardRef.current.position.y = 0;
+
+            // }
 
 
 
 
-
-            if (skateboardRef.current.position.y >= 0.9) {
-                skateboardRef.current.position.y = 0
-
-
-            } else {
-                skateboardRef.current.rotation.y += 0.3;
-                skateboardRef.current.position.y = 0;
-
-            }
             // if (rabbitRef.current.position.y >= 9) {
             //     rabbitRef.current.position.y -= 7
 
