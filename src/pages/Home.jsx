@@ -1,16 +1,30 @@
 
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import Loader from '../components/Loader';
-import Rabbit from '../models/rabbit';
+import Rabbit from '../models/Rabbit';
 import Sky from '../models/Sky';
 import Plane from '../models/Plane';
 import HomeInfo from '../components/HomeInfo';
+import sakura from '../assets/sakura.mp3'
+import { soundoff, soundon } from '../assets/icons';
 
 
 const Home = () => {
+    const audioRef = useRef(new Audio(sakura))
+    audioRef.current.volume = 0.4
+    audioRef.current.loop = true
     const [isRotating, setIsRotating] = useState(false)
     const [currentStage, setCurrentStage] = useState(0)
+    const [isPlaingMusic, setIsPlaingMusic] = useState(false)
+    useEffect(() => {
+        if (isPlaingMusic) {
+            audioRef.current.play()
+        }
+        return () => {
+            audioRef.current.pause()
+        }
+    }, [isPlaingMusic])
     const adjustRabbitForScreenSize = () => {
         let screenScale = null;
         let screenPosition = [0, -1.5, -43];
@@ -68,6 +82,12 @@ const Home = () => {
                     />
                 </Suspense>
             </Canvas>
+            <div className='absolute bottom-2 left-2'>
+                <img src={!isPlaingMusic ? soundoff : soundon}
+                    alt='sound'
+                    className='w-10 h-10 cursor-pointer object-contain'
+                    onClick={() => setIsPlaingMusic(!isPlaingMusic)} />
+            </div>
         </section>
     );
 };
